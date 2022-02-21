@@ -3,7 +3,7 @@
 // @namespace    https://github.com/emtry/Bing-Auto-Search
 // @updateURL    https://raw.githubusercontent.com/emtry/Bing-Auto-Search/main/Bing%20Auto%20Search.user.js
 // @downloadURL  https://raw.githubusercontent.com/emtry/Bing-Auto-Search/main/Bing%20Auto%20Search.user.js
-// @version      1.0.4
+// @version      1.0.5
 // @description  Microsoft Rewards Bing Auto Search
 // @author       ehgenong
 // @match        https://rewards.microsoft.com/pointsbreakdown
@@ -53,7 +53,7 @@
 })();
 
 
-    let time=86400000;
+    let time=43200000;
     setTimeout(() => {
         location.reload()
     },time);
