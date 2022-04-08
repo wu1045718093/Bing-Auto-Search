@@ -3,7 +3,7 @@
 // @namespace    https://github.com/emtry/Bing-Auto-Search
 // @updateURL    https://raw.githubusercontent.com/emtry/Bing-Auto-Search/main/Bing%20Auto%20Search.user.js
 // @downloadURL  https://raw.githubusercontent.com/emtry/Bing-Auto-Search/main/Bing%20Auto%20Search.user.js
-// @version      1.0.5
+// @version      1.1.6
 // @description  Microsoft Rewards Bing Auto Search
 // @author       ehgenong
 // @match        https://rewards.microsoft.com/pointsbreakdown
@@ -13,36 +13,63 @@
 // @connect      www.bing.com
 // ==/UserScript==
 
+//自定义数据
+var autoRefresh = true;
+var edgeUserAgent = window.navigator.userAgent;
+var mobileUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 14_8 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.2 Mobile/15E148 Safari/604.1";
+
 (function() {
     'use strict';
 
     for (var i=0,j=60; i<j; i++){
         if(i > 45 || i%2 == 0){
-            setTimeout(() => ret0(wordlists[Math.floor(Math.random()*(2048+1))]), 5000 * i)
+            setTimeout(() => ret0(wordlists[Math.floor(Math.random()*(2048+1))],autoRefresh), 5000 * i)
         }else{
-            setTimeout(() => ret1(wordlists[Math.floor(Math.random()*(2048+1))]), 5000 * i)
+            setTimeout(() => ret1(wordlists[Math.floor(Math.random()*(2048+1))],autoRefresh), 5000 * i)
         }
 
     }
 
-
-    function ret0(temp){
+    function ret0(temp,autoRefresh){
         GM_xmlhttpRequest({
             method: "GET",
             url: "https://www.bing.com/search?q=" + temp,
+            headers: {"User-Agent": edgeUserAgent},
             onload: function(res) {
                 console.log('PC search: ' + temp);
+                if (autoRefresh == true){
+                    GM_xmlhttpRequest({
+                        method: "GET",
+                        url: "https://rewards.bing.com/api/getuserinfo",
+                        headers: {"User-Agent": edgeUserAgent},
+                        onload: function(res) {
+                            var p = JSON.parse(res.responseText);
+                            console.log('('+ p.dashboard.userStatus.counters.pcSearch[0].attributes.progress + '/' + p.dashboard.userStatus.counters.pcSearch[0].attributes.max + ')');
+                        }
+                    });
+                }
             }
         });
     }
 
-    function ret1(temp){
+    function ret1(temp,autoRefresh){
         GM_xmlhttpRequest({
             method: "GET",
             url: "https://www.bing.com/search?q=" + temp,
-            headers: {"User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_8 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.2 Mobile/15E148 Safari/604.1"},
+            headers: {"User-Agent": mobileUserAgent},
             onload: function(res) {
                 console.log('Mobile search: ' + temp);
+                if (autoRefresh == true){
+                    GM_xmlhttpRequest({
+                        method: "GET",
+                        url: "https://rewards.bing.com/api/getuserinfo",
+                        headers: {"User-Agent": edgeUserAgent},
+                        onload: function(res) {
+                            var p = JSON.parse(res.responseText);
+                            console.log('('+ p.dashboard.userStatus.counters.mobileSearch[0].attributes.progress + '/' + p.dashboard.userStatus.counters.mobileSearch[0].attributes.max + ')');
+                        }
+                    });
+                }
             }
         });
     }
@@ -53,8 +80,8 @@
 })();
 
 
-    let time=43200000;
-    setTimeout(() => {
-        location.reload()
-    },time);
+let time=43200000;
+setTimeout(() => {
+    location.reload()
+},time);
 
