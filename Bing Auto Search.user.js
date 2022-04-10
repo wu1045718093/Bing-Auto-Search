@@ -3,7 +3,7 @@
 // @namespace    https://github.com/emtry/Bing-Auto-Search
 // @updateURL    https://raw.githubusercontent.com/emtry/Bing-Auto-Search/main/Bing%20Auto%20Search.user.js
 // @downloadURL  https://raw.githubusercontent.com/emtry/Bing-Auto-Search/main/Bing%20Auto%20Search.user.js
-// @version      1.1.6
+// @version      1.1.7
 // @description  Microsoft Rewards Bing Auto Search
 // @author       ehgenong
 // @match        https://rewards.microsoft.com/pointsbreakdown
@@ -11,6 +11,7 @@
 // @icon         https://www.google.com/s2/favicons?domain=bing.com
 // @grant        GM_xmlhttpRequest
 // @connect      www.bing.com
+// @connect      rewards.bing.com
 // ==/UserScript==
 
 //自定义数据
