@@ -95,7 +95,7 @@ var timeTask = setInterval(function () {
     if (m == 0 && s == 0) {
         console.log(date);
     }
-    if (h == 17 && m == 0 && s == 0 || h == 17 && m == 30 && s == 0) {
+    if ( ( h == 17 && m == 0 && s == 0 ) || ( h == 17 && m == 30 && s == 0 ) ) {
         callFunction();
     }
 }, 1000);
