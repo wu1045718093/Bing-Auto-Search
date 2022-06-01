@@ -3,7 +3,7 @@
 // @namespace    https://github.com/emtry/Bing-Auto-Search
 // @updateURL    https://raw.githubusercontent.com/emtry/Bing-Auto-Search/main/Bing%20Auto%20Search.user.js
 // @downloadURL  https://raw.githubusercontent.com/emtry/Bing-Auto-Search/main/Bing%20Auto%20Search.user.js
-// @version      1.1.8
+// @version      1.2.0
 // @description  Microsoft Rewards Bing Auto Search
 // @author       ehgenong
 // @match        https://rewards.microsoft.com/pointsbreakdown
@@ -12,8 +12,10 @@
 // @grant        GM_xmlhttpRequest
 // @connect      www.bing.com
 // ==/UserScript==
+
+
 //自定义数据
-var autoRefresh = true;
+var getuserinfo = true; //控制台查看进度
 var edgeUserAgent = window.navigator.userAgent;
 var mobileUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 14_8 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.2 Mobile/15E148 Safari/604.1";
 
@@ -22,14 +24,13 @@ var mobileUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 14_8 like Mac OS X) Ap
 
     for (var i = 0, j = 60; i < j; i++) {
         if (i > 45 || i % 2 == 0) {
-            setTimeout(() => ret0(wordlists[Math.floor(Math.random() * (2048 + 1))], autoRefresh), 5000 * i)
+            setTimeout(() => ret0(wordlists[Math.floor(Math.random() * (2048 + 1))], getuserinfo), 5000 * i)
         } else {
-            setTimeout(() => ret1(wordlists[Math.floor(Math.random() * (2048 + 1))], autoRefresh), 5000 * i)
+            setTimeout(() => ret1(wordlists[Math.floor(Math.random() * (2048 + 1))], getuserinfo), 5000 * i)
         }
-
     }
 
-    function ret0(temp, autoRefresh) {
+    function ret0(temp, getuserinfo) {
         GM_xmlhttpRequest({
             method: "GET",
             url: "https://www.bing.com/search?q=" + temp,
@@ -38,7 +39,7 @@ var mobileUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 14_8 like Mac OS X) Ap
             },
             onload: function (res) {
                 console.log('PC search: ' + temp);
-                if (autoRefresh == true) {
+                if (getuserinfo == true) {
                     GM_xmlhttpRequest({
                         method: "GET",
                         url: "https://rewards.microsoft.com/api/getuserinfo",
@@ -55,7 +56,7 @@ var mobileUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 14_8 like Mac OS X) Ap
         });
     }
 
-    function ret1(temp, autoRefresh) {
+    function ret1(temp, getuserinfo) {
         GM_xmlhttpRequest({
             method: "GET",
             url: "https://www.bing.com/search?q=" + temp,
@@ -64,7 +65,7 @@ var mobileUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 14_8 like Mac OS X) Ap
             },
             onload: function (res) {
                 console.log('Mobile search: ' + temp);
-                if (autoRefresh == true) {
+                if (getuserinfo == true) {
                     GM_xmlhttpRequest({
                         method: "GET",
                         url: "https://rewards.microsoft.com/api/getuserinfo",
@@ -87,19 +88,21 @@ var mobileUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 14_8 like Mac OS X) Ap
 })();
 
 
-var timeTask = setInterval(function () {
-    var date = new Date();
-    var h = date.getHours();
-    var m = date.getMinutes();
-    var s = date.getSeconds();
-    if (m == 0 && s == 0) {
-        console.log(date);
-    }
-    if ( ( h == 17 && m == 0 && s == 0 ) || ( h == 17 && m == 30 && s == 0 ) ) {
-        callFunction();
-    }
-}, 1000);
 
-function callFunction() {
-    location.reload()
+
+
+//每天5点自动刷新Rewards
+var date = new Date();
+var h = date.getHours();
+var m = date.getMinutes();
+var _h = (23 - h + 17) % 24;
+var _m = 60 - m;
+reLoad((_h * 60 + _m) * 60 * 1000);
+console.log( _h + '小时' + _m + '分钟后自动刷新Rewards');
+
+
+function reLoad(time) {
+    setTimeout(() => {
+         location.reload()
+     },time);
 }
