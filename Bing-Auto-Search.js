@@ -83,7 +83,7 @@ const ret = function (Terminal, q, UserAgent) {
 
 //获取进度
 const getuserinfo = function (Terminal) {
-    axios_bing.get('https://rewards.microsoft.com/api/getuserinfo/', {})
+    axios_bing.get('https://rewards.bing.com/api/getuserinfo/', {})
         .then(function (response) {
             if (response.status == 200 && response.data.dashboard.userStatus.counters.shopAndEarn[0].name.indexOf("ENUS") != -1) {
                 console.log('(' + response.data.dashboard.userStatus.counters[Terminal+'Search'][0].attributes.progress + '/' + response.data.dashboard.userStatus.counters[Terminal+'Search'][0].attributes.max + ')');
