@@ -59,11 +59,11 @@ BingAutoSearch_MicroSoft_COOKIE
 # 待完善
 ```
 
-### 油猴 部署
+### Tampermonkey 部署（暂停维护）
 
 [安装](https://github.com/emtry/Bing-Auto-Search/raw/main/Bing%20Auto%20Search.user.js)
 
-work in https://rewards.bing.com/pointsbreakdown
+work in https://rewards.microsoft.com/pointsbreakdown
 
 
 ## 配置说明
