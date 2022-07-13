@@ -16,7 +16,7 @@ const wordlists = process.env.BingAutoSearch_wordlists || ["abandon", "ability",
 
 
 
-console.log("\nBing Auto Search\nVersion 2.0.1\n")
+console.log("\nBing Auto Search\nVersion 2.0.2\n")
 
 //创建axios实例
 const axios_bing = axios.create({
@@ -41,7 +41,7 @@ axios_bing.get('/', {
                 username = username_temp[0].slice(23, -1);
                 console.log('已登录账号: ' + username + '\n');
             } else {
-                console.log('未登录!\n');
+                console.log('未登录\n');
                 process.exit();
             }
         } else {
@@ -82,11 +82,24 @@ const ret = function (Terminal, q, UserAgent) {
 };
 
 //获取进度
-const getuserinfo = function (Terminal) {
-    axios_bing.get('https://rewards.bing.com/api/getuserinfo/', {})
+const getuserinfo = function (terminal) {
+    return axios_bing.get('https://rewards.bing.com/api/getuserinfo/', {})
         .then(function (response) {
             if (response.status == 200 && response.data.dashboard.userStatus.counters.shopAndEarn[0].name.indexOf("ENUS") != -1) {
-                console.log('(' + response.data.dashboard.userStatus.counters[Terminal+'Search'][0].attributes.progress + '/' + response.data.dashboard.userStatus.counters[Terminal+'Search'][0].attributes.max + ')');
+                try {
+                    let progress = response.data.dashboard.userStatus.counters[terminal + 'Search'][0].attributes.progress;
+                    let max = response.data.dashboard.userStatus.counters[terminal + 'Search'][0].attributes.max;
+                    console.log('(' + progress + '/' + max + ')');
+                    if (progress == max) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } catch (error) {
+                    console.log('不存在 ' + terminal + ' 任务')
+                    console.error(error);
+                    return true;
+                }
             } else if (response.status == 200 && response.data.dashboard.userStatus.counters.shopAndEarn[0].name.indexOf("ENUS") == -1) {
                 console.log('当前非美区Rewards: ' + response.data.dashboard.userStatus.counters.shopAndEarn[0].name);
                 process.exit();
@@ -107,18 +120,30 @@ const sleep = ms => {
 }
 
 //主函数
-const main = async() => {
-    for (let i = 0, j = 60; i < j; i++) {
-        if (i > 45 || i % 2 == 0) {
-            ret('PC', wordlists[Math.floor(Math.random() * wordlists.length)], edgeUserAgent);
-            getuserinfo('pc');
-        } else {
-            ret('Mobile', wordlists[Math.floor(Math.random() * wordlists.length)], mobileUserAgent);
-            getuserinfo('mobile');
-        }
-        await sleep(sleep_sec * 1000);
+var flag = 0;
+const main = async(Terminal, terminal, UserAgent) => {
+    await sleep(sleep_sec * 1000);
+
+    ret(Terminal, wordlists[Math.floor(Math.random() * wordlists.length)], UserAgent);
+    let loop = await getuserinfo(terminal);
+    if (!loop & Terminal == 'PC' & flag == 0) {
+        await main('Mobile', 'mobile', mobileUserAgent);
+    } else if (!loop & Terminal == 'Mobile' & flag == 0) {
+        await main('PC', 'pc', edgeUserAgent);
+    } else if (loop & Terminal == 'PC' & flag == 0) {
+        flag += 1;
+        await main('Mobile', 'mobile', mobileUserAgent);
+    } else if (loop & Terminal == 'Mobile' & flag == 0) {
+        flag += 1;
+        await main('PC', 'pc', edgeUserAgent);
+    } else if (!loop & Terminal == 'Mobile' & flag == 1) {
+        await main('Mobile', 'mobile', mobileUserAgent);
+    } else if (!loop & Terminal == 'PC' & flag == 1) {
+        await main('PC', 'pc', edgeUserAgent);
+    } else if (flag == 2) {
+        process.exit();
     }
 }
 
 
-main()
+main('PC', 'pc', edgeUserAgent);
