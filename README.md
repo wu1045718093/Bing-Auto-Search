@@ -56,7 +56,21 @@ BingAutoSearch_MicroSoft_COOKIE
 ### docker 部署
 
 ```bash
-# 待完善
+# 获取脚本
+git clone https://github.com/emtry/Bing-Auto-Search.git
+
+cd Bing-Auto-Search
+
+# 构建镜像
+docker build -t bing-auto-search:v2 .
+
+# 创建容器
+docker create --name=Bing-Auto-Search \
+  -e BingAutoSearch_MicroSoft_COOKIE="填入获取的Cookie" \
+  bing-auto-search:v2
+
+# 运行
+docker start -a Bing-Auto-Search
 ```
 
 ### Tampermonkey 部署（暂停维护）
