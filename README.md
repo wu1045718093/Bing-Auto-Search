@@ -94,7 +94,7 @@ work in https://rewards.microsoft.com/pointsbreakdown
 
 控制台里复制`rewards.bing.com`的`cookie`
 
-两个cookie用半角分号;连起来
+两个`cookie`用半角分号;连起来
 
 
 ### 环境变量
