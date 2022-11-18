@@ -1,4 +1,5 @@
 const axios = require('axios');
+const HttpsProxyAgent = require("https-proxy-agent");
 const notify = require('./sendNotify');
 
 //自定义
@@ -7,6 +8,9 @@ let Cookie = process.env.BingAutoSearch_MicroSoft_COOKIE || "";
 
 //每次搜索间隔秒数
 let sleep_sec = process.env.BingAutoSearch_sleep_sec || 5;
+
+//HTTP proxy
+let proxy = process.env.BingAutoSearch_proxy || "";
 
 //User-Agent
 let edgeUserAgent = process.env.BingAutoSearch_edgeUserAgent || "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.66 Safari/537.36 Edg/103.0.1264.44";
@@ -17,17 +21,32 @@ const wordlists = process.env.BingAutoSearch_wordlists || ["abandon", "ability",
 
 
 
-console.log("\nBing Auto Search\nVersion 2.0.3\n")
+console.log("\nBing Auto Search\nVersion 2.0.4\n")
 
 //创建axios实例
-const axios_bing = axios.create({
-    baseURL: 'https://www.bing.com/',
-    timeout: 0,
-    headers: {
-        "Cookie": Cookie
-    },
-    withCredentials: true
-});
+let axios_bing;
+if (proxy) {
+    const httpsAgent = new HttpsProxyAgent(proxy);
+    axios_bing = axios.create({
+        baseURL: 'https://www.bing.com/',
+        timeout: 0,
+        headers: {
+            "Cookie": Cookie
+        },
+        withCredentials: true,
+        proxy: false,
+        httpsAgent
+    });
+} else {
+    axios_bing = axios.create({
+        baseURL: 'https://www.bing.com/',
+        timeout: 0,
+        headers: {
+            "Cookie": Cookie
+        },
+        withCredentials: true
+    });
+}
 
 //判断是否登录 
 axios_bing.get('/', {
@@ -35,12 +54,14 @@ axios_bing.get('/', {
             "User-Agent": edgeUserAgent,
         },
     })
-    .then(function (response) {
+    .then(function(response) {
         if (response.status == 200) {
+            //console.log(response.data);
             username_temp = /(<span id="id_n" title=").*?(")/.exec(response.data);
             if (username_temp) {
                 username = username_temp[0].slice(23, -1);
                 console.log('已登录账号: ' + username + '\n');
+                getPoints(1);
             } else {
                 console.log('未登录\n');
                 process.exit();
@@ -51,19 +72,19 @@ axios_bing.get('/', {
             process.exit();
         }
     })
-    .catch(function (error) {
+    .catch(function(error) {
         console.log(error);
     });
 
 // 获取积分
-const getPoints = function (flag) {
+const getPoints = function(flag) {
     axios_bing.get('https://rewards.bing.com/api/getuserinfo/', {})
-        .then(function (response) {
+        .then(function(response) {
             if (response.status == 200 && response.data.dashboard.userStatus.counters.shopAndEarn[0].name.indexOf("ENUS") != -1) {
                 try {
                     let Points = response.data.dashboard.userStatus.availablePoints;
                     console.log('当前积分：' + Points);
-                    if (flag == 2){
+                    if (flag == 2) {
                         notify.sendNotify('Bing Auto Search', '每日搜索任务完成\n当前分数：' + Points);
                     }
                 } catch (error) {
@@ -78,13 +99,13 @@ const getPoints = function (flag) {
                 process.exit();
             }
         })
-        .catch(function (error) {
+        .catch(function(error) {
             console.log(error);
         });
 };
 
 //搜索函数
-const ret = function (Terminal, q, UserAgent) {
+const ret = function(Terminal, q, UserAgent) {
     axios_bing.get('/search', {
             params: {
                 q: q
@@ -93,7 +114,7 @@ const ret = function (Terminal, q, UserAgent) {
                 "User-Agent": UserAgent,
             },
         })
-        .then(function (response) {
+        .then(function(response) {
             if (response.status == 200 && response.request.socket.servername == 'cn.bing.com') {
                 console.log('Microsoft Rewards 在该国家或地区中不可用: ' + response.request.socket.servername);
                 process.exit();
@@ -105,15 +126,15 @@ const ret = function (Terminal, q, UserAgent) {
                 process.exit();
             }
         })
-        .catch(function (error) {
+        .catch(function(error) {
             console.log(error);
         });
 };
 
 //获取进度
-const getuserinfo = function (terminal) {
+const getuserinfo = function(terminal) {
     return axios_bing.get('https://rewards.bing.com/api/getuserinfo/', {})
-        .then(function (response) {
+        .then(function(response) {
             if (response.status == 200 && response.data.dashboard.userStatus.counters.shopAndEarn[0].name.indexOf("ENUS") != -1) {
                 try {
                     let progress = response.data.dashboard.userStatus.counters[terminal + 'Search'][0].attributes.progress;
@@ -138,7 +159,7 @@ const getuserinfo = function (terminal) {
                 process.exit();
             }
         })
-        .catch(function (error) {
+        .catch(function(error) {
             console.log(error);
         });
 };
@@ -150,7 +171,7 @@ const sleep = ms => {
 
 //主函数
 var flag = 0;
-const main = async(Terminal, terminal, UserAgent) => {
+const main = async (Terminal, terminal, UserAgent) => {
     await sleep(sleep_sec * 1000);
 
     ret(Terminal, wordlists[Math.floor(Math.random() * wordlists.length)], UserAgent);
@@ -174,5 +195,4 @@ const main = async(Terminal, terminal, UserAgent) => {
     }
 }
 
-getPoints(1);
 main('PC', 'pc', edgeUserAgent);
