@@ -11,7 +11,7 @@ git clone https://github.com/emtry/Bing-Auto-Search.git
 cd Bing-Auto-Search
 
 # 安装依赖
-npm install axios --save
+npm install axios https-proxy-agent --save
 
 # 运行
 BingAutoSearch_MicroSoft_COOKIE="填入获取的Cookie" \
@@ -88,9 +88,14 @@ work in https://rewards.microsoft.com/pointsbreakdown
 
 先登录 http://www.bing.com
 
+控制台里复制`www.bing.com`的`cookie`
+
 再在同一标签页打开 http://rewards.bing.com/
 
 控制台里复制`rewards.bing.com`的`cookie`
+
+两个cookie用半角分号;连起来
+
 
 ### 环境变量
 
@@ -99,5 +104,6 @@ work in https://rewards.microsoft.com/pointsbreakdown
 | BingAutoSearch_MicroSoft_COOKIE | 获取的Cookie | 空 |
 | BingAutoSearch_sleep_sec | 每次搜索间隔秒数 | 5 |
 | BingAutoSearch_edgeUserAgent   | Edge User-Agent | 略 |
+| BingAutoSearch_proxy   | 如 http://127.0.0.1:9870 | 空 |
 | BingAutoSearch_mobileUserAgent   | 手机 User-Agent | 略 |
 | BingAutoSearch_wordlists | 搜索内容 | 略 |
