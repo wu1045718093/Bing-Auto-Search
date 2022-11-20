@@ -100,7 +100,7 @@ work in https://rewards.bing.com/pointsbreakdown
 | ---------- | -------------- | -------------- |
 | BingAutoSearch_MicroSoft_COOKIE | 获取的Cookie | 空 |
 | BingAutoSearch_sleep_sec | 每次搜索间隔秒数 | 5 |
-| BingAutoSearch_edgeUserAgent   | Edge User-Agent | 略 |
 | BingAutoSearch_proxy   | 如 http://127.0.0.1:9870 | 空 |
+| BingAutoSearch_edgeUserAgent   | Edge User-Agent | 略 |
 | BingAutoSearch_mobileUserAgent   | 手机 User-Agent | 略 |
 | BingAutoSearch_wordlists | 搜索内容 | 略 |
