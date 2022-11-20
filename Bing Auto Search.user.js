@@ -3,7 +3,7 @@
 // @namespace    https://github.com/emtry/Bing-Auto-Search
 // @updateURL    https://raw.githubusercontent.com/emtry/Bing-Auto-Search/main/Bing%20Auto%20Search.user.js
 // @downloadURL  https://raw.githubusercontent.com/emtry/Bing-Auto-Search/main/Bing%20Auto%20Search.user.js
-// @version      1.2.1
+// @version      1.2.2
 // @description  Microsoft Rewards Bing Auto Search
 // @author       ehgenong
 // @match        https://rewards.microsoft.com/pointsbreakdown
@@ -42,7 +42,7 @@ var mobileUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 14_8 like Mac OS X) Ap
                 if (getuserinfo == true) {
                     GM_xmlhttpRequest({
                         method: "GET",
-                        url: "https://rewards.microsoft.com/api/getuserinfo",
+                        url: "https://rewards.bing.com/api/getuserinfo",
                         headers: {
                             "User-Agent": edgeUserAgent
                         },
@@ -68,7 +68,7 @@ var mobileUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 14_8 like Mac OS X) Ap
                 if (getuserinfo == true) {
                     GM_xmlhttpRequest({
                         method: "GET",
-                        url: "https://rewards.microsoft.com/api/getuserinfo",
+                        url: "https://rewards.bing.com/api/getuserinfo",
                         headers: {
                             "User-Agent": edgeUserAgent
                         },
