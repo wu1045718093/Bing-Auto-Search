@@ -24,6 +24,7 @@ BingAutoSearch_MicroSoft_COOKIE="填入获取的Cookie" \
 
 ```bash
 axios
+https-proxy-agent
 ```
 
 2. `定时任务`——`新建任务`
@@ -77,7 +78,7 @@ docker start -a Bing-Auto-Search
 
 [安装](https://github.com/emtry/Bing-Auto-Search/raw/main/Bing%20Auto%20Search.user.js)
 
-work in https://rewards.microsoft.com/pointsbreakdown
+work in https://rewards.bing.com/pointsbreakdown
 
 
 ## 配置说明
@@ -88,13 +89,9 @@ work in https://rewards.microsoft.com/pointsbreakdown
 
 先登录 http://www.bing.com
 
-控制台里复制`www.bing.com`的`cookie`
-
 再在同一标签页打开 http://rewards.bing.com/
 
 控制台里复制`rewards.bing.com`的`cookie`
-
-两个`cookie`用半角分号;连起来
 
 
 ### 环境变量
