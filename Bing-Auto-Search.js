@@ -21,7 +21,7 @@ const wordlists = process.env.BingAutoSearch_wordlists || ["abandon", "ability",
 
 
 
-console.log("\nBing Auto Search\nVersion 2.0.4\n")
+console.log("\nBing Auto Search\nVersion 2.0.5\n")
 
 //创建axios实例
 let axios_bing;
@@ -29,7 +29,7 @@ if (proxy) {
     const httpsAgent = new HttpsProxyAgent(proxy);
     axios_bing = axios.create({
         baseURL: 'https://www.bing.com/',
-        timeout: 0,
+        timeout: 5000,
         headers: {
             "Cookie": Cookie
         },
@@ -57,9 +57,9 @@ axios_bing.get('/', {
     .then(function(response) {
         if (response.status == 200) {
             //console.log(response.data);
-            username_temp = /(<span id="id_n" title=").*?(")/.exec(response.data);
+            username_temp = /<span id="id_n" title="(.*?)"/.exec(response.data);
             if (username_temp) {
-                username = username_temp[0].slice(23, -1);
+                username = username_temp[1];
                 console.log('已登录账号: ' + username + '\n');
                 getPoints(1);
             } else {
@@ -73,26 +73,24 @@ axios_bing.get('/', {
         }
     })
     .catch(function(error) {
-        console.log(error);
+        catcherror(error);
     });
 
 // 获取积分
 const getPoints = function(flag) {
     axios_bing.get('https://rewards.bing.com/api/getuserinfo/', {})
         .then(function(response) {
-            if (response.status == 200 && response.data.dashboard.userStatus.counters.shopAndEarn[0].name.indexOf("ENUS") != -1) {
+            if (response.status == 200) {
+                console.log('当前Rewards区域: ' + response.data.dashboard.userStatus.counters.shopAndEarn[0].name.substring(0, 4) + '\n');
                 try {
                     let Points = response.data.dashboard.userStatus.availablePoints;
-                    console.log('当前积分：' + Points);
+                    console.log('当前积分：' + Points + '\n');
                     if (flag == 2) {
-                        notify.sendNotify('Bing Auto Search', '每日搜索任务完成\n当前分数：' + Points);
+                        notify.sendNotify('Bing Auto Search', username + '\n当前分数：' + Points + '\n每日搜索任务完成');
                     }
                 } catch (error) {
                     console.error(error);
                 }
-            } else if (response.status == 200 && response.data.dashboard.userStatus.counters.shopAndEarn[0].name.indexOf("ENUS") == -1) {
-                console.log('当前非美区Rewards: ' + response.data.dashboard.userStatus.counters.shopAndEarn[0].name);
-                process.exit();
             } else {
                 console.log('未知错误');
                 console.log(response.data);
@@ -100,7 +98,7 @@ const getPoints = function(flag) {
             }
         })
         .catch(function(error) {
-            console.log(error);
+            catcherror(error);
         });
 };
 
@@ -127,7 +125,7 @@ const ret = function(Terminal, q, UserAgent) {
             }
         })
         .catch(function(error) {
-            console.log(error);
+            catcherror(error);
         });
 };
 
@@ -135,7 +133,7 @@ const ret = function(Terminal, q, UserAgent) {
 const getuserinfo = function(terminal) {
     return axios_bing.get('https://rewards.bing.com/api/getuserinfo/', {})
         .then(function(response) {
-            if (response.status == 200 && response.data.dashboard.userStatus.counters.shopAndEarn[0].name.indexOf("ENUS") != -1) {
+            if (response.status == 200) {
                 try {
                     let progress = response.data.dashboard.userStatus.counters[terminal + 'Search'][0].attributes.progress;
                     let max = response.data.dashboard.userStatus.counters[terminal + 'Search'][0].attributes.max;
@@ -147,12 +145,9 @@ const getuserinfo = function(terminal) {
                     }
                 } catch (error) {
                     console.log('不存在 ' + terminal + ' 任务');
-                    console.error(error);
+                    // console.error(error);
                     return true;
                 }
-            } else if (response.status == 200 && response.data.dashboard.userStatus.counters.shopAndEarn[0].name.indexOf("ENUS") == -1) {
-                console.log('当前非美区Rewards: ' + response.data.dashboard.userStatus.counters.shopAndEarn[0].name);
-                process.exit();
             } else {
                 console.log('未知错误');
                 console.log(response.data);
@@ -160,13 +155,30 @@ const getuserinfo = function(terminal) {
             }
         })
         .catch(function(error) {
-            console.log(error);
+            catcherror(error);
         });
 };
 
 //睡眠函数
 const sleep = ms => {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+//错误处理
+const catcherror = function(error) {
+    if (error.toString().indexOf("AxiosError: timeout") != -1) {
+        console.log("AxiosError: timeout");
+    } else if (error.toString().indexOf("AxiosError: Request failed with status code 500") != -1) {
+        console.log("AxiosError: Request failed with status code 500");
+    } else if (error.toString().indexOf("AxiosError: getaddrinfo EAI_AGAIN") != -1) {
+        console.log("AxiosError: getaddrinfo EAI_AGAIN");
+    } else if (error.toString().indexOf("AxiosError: maxContentLength size") != -1) {
+        console.log("AxiosError: maxContentLength size");
+    } else if (error.toString().indexOf("AxiosError: read ECONNRESET") != -1) {
+        console.log("AxiosError: read ECONNRESET");
+    } else {
+        console.log(error);
+    }
 }
 
 //主函数
