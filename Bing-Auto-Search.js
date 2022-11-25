@@ -63,6 +63,7 @@ axios_bing.get('/', {
                 getPoints(1);
             } else {
                 console.log('未登录\n');
+                notify.sendNotify('Bing Auto Search', '未登录');
                 process.exit();
             }
         } else {
