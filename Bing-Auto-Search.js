@@ -98,7 +98,8 @@ const getPoints = function(flag) {
             }
         })
         .catch(function(error) {
-            catcherror(error);
+            //catcherror(error);
+            console.log('AxiosError'); 
         });
 };
 
@@ -125,7 +126,8 @@ const ret = function(Terminal, q, UserAgent) {
             }
         })
         .catch(function(error) {
-            catcherror(error);
+            //catcherror(error);
+            console.log('AxiosError'); 
         });
 };
 
@@ -155,7 +157,8 @@ const getuserinfo = function(terminal) {
             }
         })
         .catch(function(error) {
-            catcherror(error);
+            //catcherror(error);
+            console.log('AxiosError'); 
         });
 };
 
