@@ -28,7 +28,7 @@ if (proxy) {
     const httpsAgent = new HttpsProxyAgent(proxy);
     axios_bing = axios.create({
         baseURL: 'https://www.bing.com/',
-        timeout: 5000,
+        timeout: 7000,
         headers: {
             "Cookie": Cookie
         },
@@ -62,14 +62,14 @@ axios_bing.get('/', {
                 console.log('已登录账号: ' + username + '\n');
                 getPoints(1);
             } else {
-                console.log('未登录\n');
+                console.log('未获取到登录信息\n');
                 notify.sendNotify('Bing Auto Search', '未登录');
-                process.exit();
+                getPoints(1);
             }
         } else {
             console.log('未知错误');
             console.log(response.data);
-            process.exit();
+            //process.exit();
         }
     })
     .catch(function(error) {
@@ -85,8 +85,10 @@ const getPoints = function(flag) {
                 try {
                     let Points = response.data.dashboard.userStatus.availablePoints;
                     console.log('当前积分：' + Points + '\n');
-                    if (flag == 2) {
+                    if (flag == 2 && username) {
                         notify.sendNotify('Bing Auto Search', username + '\n当前分数：' + Points + '\n每日搜索任务完成');
+                    } else if (flag == 2) {
+                        notify.sendNotify('Bing Auto Search', '当前分数：' + Points + '\n每日搜索任务完成');
                     }
                 } catch (error) {
                     console.error(error);
@@ -94,12 +96,11 @@ const getPoints = function(flag) {
             } else {
                 console.log('未知错误');
                 console.log(response.data);
-                process.exit();
+                //process.exit();
             }
         })
         .catch(function(error) {
-            //catcherror(error);
-            console.log('AxiosError'); 
+            catcherror(error);
         });
 };
 
@@ -114,20 +115,16 @@ const ret = function(Terminal, q, UserAgent) {
             },
         })
         .then(function(response) {
-            if (response.status == 200 && response.request.socket.servername == 'cn.bing.com') {
-                console.log('Microsoft Rewards 在该国家或地区中不可用: ' + response.request.socket.servername);
-                process.exit();
-            } else if (response.status == 200) {
+            if (response.status == 200) {
                 console.log(Terminal + ' search: ' + q);
             } else {
                 console.log('未知错误');
                 console.log(response.data);
-                process.exit();
+                //process.exit();
             }
         })
         .catch(function(error) {
-            //catcherror(error);
-            console.log('AxiosError'); 
+            catcherror(error);
         });
 };
 
@@ -153,12 +150,11 @@ const getuserinfo = function(terminal) {
             } else {
                 console.log('未知错误');
                 console.log(response.data);
-                process.exit();
+                //process.exit();
             }
         })
         .catch(function(error) {
-            //catcherror(error);
-            console.log('AxiosError'); 
+            catcherror(error);
         });
 };
 
@@ -170,19 +166,22 @@ const sleep = ms => {
 //错误处理
 const catcherror = function(error) {
     if (error.toString().indexOf("AxiosError: timeout") != -1) {
-        console.log("AxiosError: timeout");
-    } else if (error.toString().indexOf("AxiosError: aborted") != -1) {
-        console.log("AxiosError: aborted");
+        console.error("AxiosError: timeout");
+    } else if (error.toString().indexOf("Error: aborted") != -1) {
+        console.error("AxiosError: aborted");
     } else if (error.toString().indexOf("AxiosError: Request failed with status code 500") != -1) {
-        console.log("AxiosError: Request failed with status code 500");
+        console.error("AxiosError: Request failed with status code 500");
     } else if (error.toString().indexOf("AxiosError: getaddrinfo EAI_AGAIN") != -1) {
-        console.log("AxiosError: getaddrinfo EAI_AGAIN");
+        console.error("AxiosError: getaddrinfo EAI_AGAIN");
     } else if (error.toString().indexOf("AxiosError: maxContentLength size") != -1) {
-        console.log("AxiosError: maxContentLength size");
+        console.error("AxiosError: maxContentLength size");
     } else if (error.toString().indexOf("AxiosError: read ECONNRESET") != -1) {
-        console.log("AxiosError: read ECONNRESET");
+        console.error("AxiosError: read ECONNRESET");
+    } else if (error.toString().indexOf("Error: Client network socket disconnected before secure TLS connection was established") != -1) {
+        console.error("AxiosError: Client network socket disconnected before secure TLS connection was established");
     } else {
-        console.log(error);
+        console.error('AxiosError');
+        //console.error(error);
     }
 }
 
