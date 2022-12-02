@@ -106,7 +106,7 @@ axios_bing.get('/', {
     });
 
 // 获取积分
-var Points_temp=0;
+var Points_temp = 0;
 function getPoints(flag) {
     axios_bing.get('https://rewards.bing.com/api/getuserinfo/', {})
         .then(function(response) {
@@ -116,9 +116,9 @@ function getPoints(flag) {
                     let Points = response.data.dashboard.userStatus.availablePoints;
                     Points_temp = Points - Points_temp;
                     console.log('当前积分：' + Points + '\n');
-                    if (flag == 2 & username) {
+                    if (flag == 2 & username == '') {
                         notify.sendNotify('Bing Auto Search', username + '\n当前分数：' + Points + '\n新增分数：' + Points_add);
-                    } else if (flag == 2 & !username & Points_temp == 0) {
+                    } else if (flag == 2 & username != '' & Points_temp == 0) {
                         // notify.sendNotify('Bing Auto Search', '当前分数：' + Points + '\n新增分数：' + Points_temp);
                     } else if (flag == 2) {
                         notify.sendNotify('Bing Auto Search', '当前分数：' + Points + '\n新增分数：' + Points_temp);
