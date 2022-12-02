@@ -76,7 +76,7 @@ if (proxy) {
 }
 
 // 判断是否登录 
-var username;
+var username = '';
 axios_bing.get('/', {
         headers: {
             "User-Agent": edgeUserAgent,
@@ -116,9 +116,9 @@ function getPoints(flag) {
                     let Points = response.data.dashboard.userStatus.availablePoints;
                     Points_temp = Points - Points_temp;
                     console.log('当前积分：' + Points + '\n');
-                    if (flag == 2 & username == '') {
+                    if (flag == 2 & username != '') {
                         notify.sendNotify('Bing Auto Search', username + '\n当前分数：' + Points + '\n新增分数：' + Points_add);
-                    } else if (flag == 2 & username != '' & Points_temp == 0) {
+                    } else if (flag == 2 & username == '' & Points_temp == 0) {
                         // notify.sendNotify('Bing Auto Search', '当前分数：' + Points + '\n新增分数：' + Points_temp);
                     } else if (flag == 2) {
                         notify.sendNotify('Bing Auto Search', '当前分数：' + Points + '\n新增分数：' + Points_temp);
