@@ -76,7 +76,7 @@ if (proxy) {
 }
 
 // 判断是否登录 
-let username;
+var username;
 axios_bing.get('/', {
         headers: {
             "User-Agent": edgeUserAgent,
