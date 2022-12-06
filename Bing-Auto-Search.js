@@ -92,7 +92,6 @@ axios_bing.get('/', {
                 getPoints(1);
             } else {
                 console.log('未获取到登录信息\n');
-                notify.sendNotify('Bing Auto Search', '未登录');
                 getPoints(1);
             }
         } else {
@@ -175,6 +174,7 @@ function getuserinfo(terminal) {
                         return true;
                     } else if (flag2 > 10) {
                         return true;
+                        notify.sendNotify('Bing Auto Search', '未登录');
                     } else if (progress == 0) {
                         flag2 += 1;
                     } else {
