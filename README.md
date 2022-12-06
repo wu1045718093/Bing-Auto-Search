@@ -11,7 +11,7 @@ git clone https://github.com/emtry/Bing-Auto-Search.git
 cd Bing-Auto-Search
 
 # 安装依赖
-npm install axios https-proxy-agent --save
+npm install axios@1.1.3 https-proxy-agent --save
 
 # 运行
 BingAutoSearch_MicroSoft_COOKIE="填入获取的Cookie" \
@@ -23,7 +23,7 @@ BingAutoSearch_MicroSoft_COOKIE="填入获取的Cookie" \
 1. `依赖管理`——`新建依赖`——nodejs
 
 ```bash
-axios
+axios@1.1.3
 https-proxy-agent
 ```
 
