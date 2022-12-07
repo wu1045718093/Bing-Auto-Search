@@ -67,7 +67,7 @@ if (proxy) {
 } else {
     axios_bing = axios.create({
         baseURL: 'https://www.bing.com/',
-        timeout: 0,
+        timeout: 7000,
         headers: {
             "Cookie": Cookie
         },
@@ -80,7 +80,7 @@ var username = '';
 axios_bing.get('/', {
         headers: {
             "User-Agent": edgeUserAgent,
-        },
+        }
     })
     .then(function(response) {
         if (response.status == 200) {
@@ -173,8 +173,8 @@ function getuserinfo(terminal) {
                     if (progress == max) {
                         return true;
                     } else if (flag2 > 10) {
-                        return true;
                         notify.sendNotify('Bing Auto Search', '未登录');
+                        return true;
                     } else if (progress == 0) {
                         flag2 += 1;
                     } else {
