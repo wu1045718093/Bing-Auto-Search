@@ -163,6 +163,7 @@ function ret(Terminal, q, UserAgent) {
 
 // 获取进度
 var flag2 = 0;
+var flag3 = 0;
 function getuserinfo(terminal) {
     return axios_bing.get('https://rewards.bing.com/api/getuserinfo/', {})
         .then(function(response) {
@@ -186,7 +187,7 @@ function getuserinfo(terminal) {
                 } catch (error) {
                     console.log('不存在 ' + terminal + ' 任务');
                     flag2 += 1;
-                    if (flag2 > 2){
+                    if (flag3 >= 2){
                         notify.sendNotify('Bing Auto Search', '未登录');
                     }
                     // console.error(error);
