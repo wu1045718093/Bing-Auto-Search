@@ -186,7 +186,7 @@ function getuserinfo(terminal) {
                 } catch (error) {
                     console.log('不存在 ' + terminal + ' 任务');
                     flag2 += 1;
-                    if (flag2 >= 2){
+                    if (flag2 > 2){
                         notify.sendNotify('Bing Auto Search', '未登录');
                     }
                     // console.error(error);
