@@ -3,7 +3,7 @@
 // @namespace    https://github.com/emtry/Bing-Auto-Search
 // @updateURL    https://raw.githubusercontent.com/emtry/Bing-Auto-Search/main/Rewards%20Auto%20Complete.user.js
 // @downloadURL  https://raw.githubusercontent.com/emtry/Bing-Auto-Search/main/Rewards%20Auto%20Complete.user.js
-// @version      1.0.0
+// @version      1.0.1
 // @description  Microsoft Rewards Auto Complete
 // @author       ehgenong
 // @match        https://rewards.bing.com/*
@@ -119,6 +119,7 @@
             let target = document.querySelector(selector);
                 if (!!target) {
                     target.dispatchEvent(new Event('click'));
+                    target.click();
                     console.log(desc, selector);
                     resolve(selector);
                 }
