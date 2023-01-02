@@ -31,7 +31,8 @@ if (proxy) {
         baseURL: 'https://www.bing.com/',
         timeout: 7000,
         headers: {
-            "Cookie": Cookie
+            "Cookie": Cookie,
+            "Accept-Encoding": 'gzip, deflate, br'
         },
         withCredentials: true,
         proxy: false,
@@ -42,7 +43,8 @@ if (proxy) {
         baseURL: 'https://www.bing.com/',
         timeout: 7000,
         headers: {
-            "Cookie": Cookie
+            "Cookie": Cookie,
+            "Accept-Encoding": 'gzip, deflate, br'
         },
         withCredentials: true
     });
