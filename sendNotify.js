@@ -50,11 +50,11 @@ let CHAT_TOKEN = '';
 //此处填你BarkAPP的信息(IP/设备码，例如：https://api.day.app/XXXXXXXX)
 let BARK_PUSH = '';
 //BARK app推送图标,自定义推送图标(需iOS15或以上)
-let BARK_ICON = 'https://qn.whyour.cn/logo.png';
+let BARK_ICON = 'https://rewards.bing.com/rewards.png';
 //BARK app推送铃声,铃声列表去APP查看复制填写
-let BARK_SOUND = '';
+let BARK_SOUND = 'paymentsuccess';
 //BARK app推送消息的分组, 默认为"QingLong"
-let BARK_GROUP = 'QingLong';
+let BARK_GROUP = 'Microsoft Rewards';
 
 // =======================================telegram机器人通知设置区域===========================================
 //此处填你telegram bot 的Token，telegram机器人通知推送必填项.例如：1077xxx4424:AAFjv0FcqxxxxxxgEMGfi22B4yh15R5uw
@@ -264,7 +264,7 @@ async function sendNotify(
   text,
   desp,
   params = {},
-  author = '',
+  author = '\n\n本通知 By：https://github.com/whyour/qinglong',
 ) {
   //提供6种通知
   desp += author; //增加作者信息，防止被贩卖等
