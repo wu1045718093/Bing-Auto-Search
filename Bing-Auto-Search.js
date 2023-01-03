@@ -227,6 +227,8 @@ function catcherror(error) {
         console.error("AxiosError: read ECONNRESET");
     } else if (error.toString().indexOf("Error: Client network socket disconnected before secure TLS connection was established") != -1) {
         console.error("AxiosError: Client network socket disconnected before secure TLS connection was established");
+    } else if (error.toString().indexOf("TypeError [ERR_INVALID_CHAR]: Invalid character in header content [\"Cookie\"]") != -1) {
+        console.error("TypeError [ERR_INVALID_CHAR]: Invalid character in header content [\"Cookie\"]");
     } else {
         console.error('AxiosError');
         // console.error(error);
