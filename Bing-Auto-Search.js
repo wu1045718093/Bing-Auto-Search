@@ -252,6 +252,6 @@ function catcherror(error) {
         console.error('AxiosError');
         // console.error(error);
     } else {
-        console.error(error);
+        console.error(error.toString());
     }
 }
