@@ -85,7 +85,7 @@ async function login() {
         })
         .catch(function(error) {
             catcherror(error);
-            if (flag4 < 5) {
+            if (flag4 < 3) {
                 login();
                 flag4++;
             }
@@ -150,7 +150,7 @@ function getPoints(flag) {
             catcherror(error);
             if (flag5 < 5) {
                 getPoints(flag);
-                flag4++;
+                flag5++;
             }
         });
 };
