@@ -246,7 +246,7 @@ function catcherror(error) {
         console.error("AxiosError: Client network socket disconnected before secure TLS connection was established");
     } else if (error.toString().indexOf("TypeError [ERR_INVALID_CHAR]: Invalid character in header content [\"Cookie\"]") != -1) {
         console.error("TypeError [ERR_INVALID_CHAR]: Invalid character in header content [\"Cookie\"]");
-    } else if (error.toString().indexOf("AxiosError: socket hang up") != -1) {
+    } else if (error.toString().indexOf("Error: socket hang up") != -1) {
         console.error("AxiosError: socket hang up");
     } else if(error.toString().indexOf("AxiosError") != -1) {
         console.error('AxiosError');
