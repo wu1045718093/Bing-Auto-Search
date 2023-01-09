@@ -3,7 +3,7 @@
 // @namespace    https://github.com/emtry/Bing-Auto-Search
 // @updateURL    https://raw.githubusercontent.com/emtry/Bing-Auto-Search/main/Rewards%20Auto%20Complete.user.js
 // @downloadURL  https://raw.githubusercontent.com/emtry/Bing-Auto-Search/main/Rewards%20Auto%20Complete.user.js
-// @version      1.0.1
+// @version      1.0.2
 // @description  Microsoft Rewards Auto Complete
 // @author       ehgenong
 // @match        https://rewards.bing.com/*
@@ -15,17 +15,17 @@
     'use strict';
 
 
-    if(isHere('#daily-sets > h1')){
-        document.querySelector('#daily-sets > h1').addEventListener("click",function(ev){
-            Daily_set();
-        });
-    }
+//     if(isHere('#daily-sets > h1')){
+//         document.querySelector('#daily-sets > h1').addEventListener("click",function(ev){
+//             Daily_set();
+//         });
+//     }
 
-    if(isHere('#rewardsAngular > div > mee-rewards-more-activities-card > h1')){
-        document.querySelector('#rewardsAngular > div > mee-rewards-more-activities-card > h1').addEventListener("click",function(ev){
-            More_activities();
-        });
-    }
+//     if(isHere('#rewardsAngular > div > mee-rewards-more-activities-card > h1')){
+//         document.querySelector('#rewardsAngular > div > mee-rewards-more-activities-card > h1').addEventListener("click",function(ev){
+//             More_activities();
+//         });
+//     }
 
     if(isHere('#btoption1')){ //Daily poll
         (async ()=>{
