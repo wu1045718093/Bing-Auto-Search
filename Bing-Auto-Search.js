@@ -56,7 +56,7 @@ login();
 
 // 判断是否登录 
 var username = '';
-var flag4 = 0;
+var flag1 = 0;
 async function login() {
     axios_bing.get('/', {
             headers: {
@@ -83,9 +83,9 @@ async function login() {
         })
         .catch(function(error) {
             catcherror(error);
-            if (flag4 < 3) {
+            if (flag1 < 5) {
                 login();
-                flag4++;
+                flag1++;
             } else {
                 console.log('网络错误\n');
                 notify.sendNotify('Bing Auto Search', '网络错误');
@@ -121,7 +121,7 @@ async function main(Terminal, terminal, UserAgent) {
 
 // 获取积分
 var Points_temp = 0;
-var flag5 = 0;
+var flag2 = 0;
 function getPoints(flag) {
     axios_bing.get('https://rewards.bing.com/api/getuserinfo/', {})
         .then(function(response) {
@@ -151,9 +151,9 @@ function getPoints(flag) {
         })
         .catch(function(error) {
             catcherror(error);
-            if (flag5 < 5) {
+            if (flag2 < 5) {
                 getPoints(flag);
-                flag5++;
+                flag2++;
             } else {
                 console.log('未登录\n');
                 notify.sendNotify('Bing Auto Search', '未登录');
@@ -186,8 +186,6 @@ function ret(Terminal, q, UserAgent) {
 };
 
 // 获取进度
-var flag2 = 0;
-var flag3 = 0;
 function getuserinfo(terminal) {
     return axios_bing.get('https://rewards.bing.com/api/getuserinfo/', {})
         .then(function(response) {
@@ -198,25 +196,11 @@ function getuserinfo(terminal) {
                     console.log('(' + progress + '/' + max + ')');
                     if (progress == max) {
                         return true;
-                    } else if (flag2 > 10 & flag == 1) {
-                        console.log('未登录\n');
-                        notify.sendNotify('Bing Auto Search', '未登录');
-                        // return true;
-                    } else if (flag2 > 10) {
-                        return true;
-                    } else if (progress == 0) {
-                        flag2 += 1;
                     } else {
                         return false;
                     }
                 } catch (error) {
                     console.log('不存在 ' + terminal + ' 任务');
-                    flag3 += 1;
-                    if (flag3 >= 2) {
-                        console.log('未登录\n');
-                        notify.sendNotify('Bing Auto Search', '未登录');
-                    }
-                    // console.error(error);
                     return true;
                 }
             } else {
